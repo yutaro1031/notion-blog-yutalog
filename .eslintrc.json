@@ -32,7 +32,13 @@
     "prettier/@typescript-eslint"
   ],
   "rules": {
-    "react/prop-types": "off"
+    // MEMO: Using TypeScript
+    "react/prop-types": "off",
+    // MEMO: Using Next.js
+    "react/react-in-jsx-scope": "off",
+
+    "@typescript-eslint/no-explicit-any": "off",
+    "node/no-unsupported-features/es-syntax": "off"
   },
   "overrides": [
     {

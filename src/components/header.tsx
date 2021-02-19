@@ -1,3 +1,4 @@
+import { FC } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import ExtLink from "./ext-link";
@@ -13,7 +14,11 @@ const navItems: { label: string; page?: string; link?: string }[] = [
 
 const ogImageUrl = "https://notion-blog.now.sh/og-image.png";
 
-export default ({ titlePre = "" }) => {
+interface Props {
+  titlePre?: string;
+}
+
+const Header: FC<Props> = ({ titlePre = "" }) => {
   const { pathname } = useRouter();
 
   return (
@@ -48,3 +53,5 @@ export default ({ titlePre = "" }) => {
     </header>
   );
 };
+
+export default Header;

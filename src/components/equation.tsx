@@ -1,7 +1,8 @@
 import { renderToString, ParseError } from "katex";
+import { FC } from "react";
 
 function render(expression: string, displayMode: boolean): string {
-  let result: string;
+  let result = "";
   try {
     result = renderToString(expression, { displayMode: displayMode });
   } catch (e) {
@@ -15,7 +16,12 @@ function render(expression: string, displayMode: boolean): string {
   return result;
 }
 
-const Equation = ({ children, displayMode = true }) => {
+interface Props {
+  displayMode?: boolean;
+  children: string;
+}
+
+const Equation: FC<Props> = ({ children, displayMode = true }) => {
   return (
     <span
       dangerouslySetInnerHTML={{

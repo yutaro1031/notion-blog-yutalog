@@ -1,3 +1,4 @@
+import { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import fetch from "node-fetch";
 import { useRouter } from "next/router";
@@ -13,13 +14,27 @@ import getBlogIndex from "../../lib/notion/getBlogIndex";
 import getNotionUsers from "../../lib/notion/getNotionUsers";
 import { getBlogLink, getDateStr } from "../../lib/blog-helpers";
 
+interface Props {
+  redirect?: string;
+  preview: boolean;
+  post?: any;
+}
+
+interface Params extends NodeJS.Dict<string | string[]> {
+  slug: string;
+}
+
 // Get the data for each blog post
-export async function getStaticProps({ params: { slug }, preview }) {
+export const getStaticProps: GetStaticProps<Props, Params> = async ({
+  params,
+  preview,
+}) => {
+  const slug = params?.slug || "";
   // load the postsTable so that we can get the page's ID
   const postsTable = await getBlogIndex();
   const post = postsTable[slug];
 
-  // if we can't find the post or if it is unpublished and
+  // if we can&apos;t find the post or if it is unpublished and
   // viewed without preview mode then we just redirect to /blog
   if (!post || (post.Published !== "Yes" && !preview)) {
     console.log(`Failed to find post for slug: ${slug}`);
@@ -37,7 +52,7 @@ export async function getStaticProps({ params: { slug }, preview }) {
   for (let i = 0; i < postData.blocks.length; i++) {
     const { value } = postData.blocks[i];
     const { type, properties } = value;
-    if (type == "tweet") {
+    if (type === "tweet") {
       const src = properties.source[0][0];
       // parse id from https://twitter.com/_ijjk/status/TWEET_ID format
       const tweetId = src.split("/")[5].split("?")[0];
@@ -66,7 +81,7 @@ export async function getStaticProps({ params: { slug }, preview }) {
     },
     revalidate: 10,
   };
-}
+};
 
 // Return our list of blog posts to prerender
 export async function getStaticPaths() {
@@ -83,7 +98,7 @@ export async function getStaticPaths() {
 
 const listTypes = new Set(["bulleted_list", "numbered_list"]);
 
-const RenderPost = ({ post, redirect, preview }) => {
+const RenderPost: NextPage<Props> = ({ post, redirect, preview }) => {
   const router = useRouter();
 
   let listTagName: string | null = null;
@@ -108,15 +123,15 @@ const RenderPost = ({ post, redirect, preview }) => {
         const script = document.createElement("script");
         script.async = true;
         script.src = twitterSrc;
-        document.querySelector("body").appendChild(script);
+        document.querySelector("body")?.appendChild(script);
       }
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (redirect && !post) {
       router.replace(redirect);
     }
-  }, [redirect, post]);
+  }, [redirect, post]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
@@ -124,13 +139,14 @@ const RenderPost = ({ post, redirect, preview }) => {
     return <div>Loading...</div>;
   }
 
-  // if you don't have a post at this point, and are not
+  // if you don&apos;t have a post at this point, and are not
   // loading one from fallback then  redirect back to the index
   if (!post) {
     return (
       <div className={blogStyles.post}>
         <p>
-          Woops! didn't find that post, redirecting you back to the blog index
+          Woops! didn&apos;t find that post, redirecting you back to the blog
+          index
         </p>
       </div>
     );
@@ -165,7 +181,7 @@ const RenderPost = ({ post, redirect, preview }) => {
           <p>This post has no content</p>
         )}
 
-        {(post.content || []).map((block, blockIdx) => {
+        {(post.content || []).map((block: any, blockIdx: number) => {
           const { value } = block;
           const { type, properties, id, parent_id } = value;
           const isLast = blockIdx === post.content.length - 1;
@@ -196,7 +212,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                 Object.keys(listMap).map((itemId) => {
                   if (listMap[itemId].isNested) return null;
 
-                  const createEl = (item) =>
+                  const createEl = (item: any) =>
                     React.createElement(
                       components.li || "ul",
                       { key: item.key },
@@ -205,7 +221,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                         ? React.createElement(
                             components.ul || "ul",
                             { key: item + "sub-list" },
-                            item.nested.map((nestedId) =>
+                            item.nested.map((nestedId: any) =>
                               createEl(listMap[nestedId])
                             )
                           )

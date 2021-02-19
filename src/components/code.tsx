@@ -1,7 +1,13 @@
+import { FC } from "react";
 import Prism from "prismjs";
 import "prismjs/components/prism-jsx";
 
-const Code = ({ children, language = "javascript" }) => {
+interface Props {
+  language?: string;
+  children: string;
+}
+
+const Code: FC<Props> = ({ children, language = "javascript" }) => {
   return (
     <>
       <pre>
@@ -10,7 +16,8 @@ const Code = ({ children, language = "javascript" }) => {
             __html: Prism.highlight(
               children,
               Prism.languages[language.toLowerCase()] ||
-                Prism.languages.javascript
+                Prism.languages["javascript"],
+              language
             ),
           }}
         />

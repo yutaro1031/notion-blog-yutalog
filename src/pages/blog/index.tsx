@@ -1,3 +1,4 @@
+import { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import Header from "../../components/header";
 
@@ -13,7 +14,12 @@ import { textBlock } from "../../lib/notion/renderers";
 import getNotionUsers from "../../lib/notion/getNotionUsers";
 import getBlogIndex from "../../lib/notion/getBlogIndex";
 
-export async function getStaticProps({ preview }) {
+interface Props {
+  preview: boolean;
+  posts: any[];
+}
+
+export const getStaticProps: GetStaticProps<Props> = async ({ preview }) => {
   const postsTable = await getBlogIndex();
 
   const authorsToGet: Set<string> = new Set();
@@ -35,7 +41,7 @@ export async function getStaticProps({ preview }) {
   const { users } = await getNotionUsers([...authorsToGet]);
 
   posts.map((post) => {
-    post.Authors = post.Authors.map((id) => users[id].full_name);
+    post.Authors = post.Authors.map((id: any) => users[id].full_name);
   });
 
   return {
@@ -45,9 +51,9 @@ export async function getStaticProps({ preview }) {
     },
     revalidate: 10,
   };
-}
+};
 
-export default ({ posts = [], preview }) => {
+const BlogIndex: NextPage<Props> = ({ posts = [], preview }) => {
   return (
     <>
       <Header titlePre="Blog" />
@@ -89,7 +95,7 @@ export default ({ posts = [], preview }) => {
               <p>
                 {(!post.preview || post.preview.length === 0) &&
                   "No preview available"}
-                {(post.preview || []).map((block, idx) =>
+                {(post.preview || []).map((block: any, idx: number) =>
                   textBlock(block, true, `${post.Slug}${idx}`)
                 )}
               </p>
@@ -100,3 +106,5 @@ export default ({ posts = [], preview }) => {
     </>
   );
 };
+
+export default BlogIndex;

@@ -1,4 +1,6 @@
-const collectText = (el, acc = []) => {
+import { FC } from "react";
+
+const collectText = (el: any, acc = [] as any) => {
   if (el) {
     if (typeof el === "string") acc.push(el);
     if (Array.isArray(el)) el.map((item) => collectText(item, acc));
@@ -7,10 +9,15 @@ const collectText = (el, acc = []) => {
   return acc.join("").trim();
 };
 
-export default ({ children: component, id }: { children: any; id?: any }) => {
-  const children = component.props.children || "";
-  const text = children;
+interface Props {
+  children: any;
+  id?: any;
+}
 
+const Heading: FC<Props> = ({ children, id }) => {
+  const text = children.props.children || "";
+
+  // eslint-disable-next-line eqeqeq
   if (null == id) {
     id = collectText(text)
       .toLowerCase()
@@ -20,7 +27,9 @@ export default ({ children: component, id }: { children: any; id?: any }) => {
 
   return (
     <a href={`#${id}`} id={id} style={{ color: "inherit" }}>
-      {component}
+      {children}
     </a>
   );
 };
+
+export default Heading;

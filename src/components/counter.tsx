@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import { FC, useState } from "react";
 
-export default ({ initialValue }) => {
+interface Props {
+  initialValue: number;
+}
+
+const Counter: FC<Props> = ({ initialValue }) => {
   const [clicks, setClicks] = useState(initialValue);
 
   return (
@@ -11,3 +15,5 @@ export default ({ initialValue }) => {
     </div>
   );
 };
+
+export default Counter;

@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import { values } from "./rpc";
 import Slugger from "github-slugger";
 import queryCollection from "./queryCollection";
