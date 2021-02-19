@@ -5,7 +5,8 @@
     "dev": "next dev",
     "start": "next start",
     "build": "next build && node .next/serverless/scripts/build-rss.js",
-    "lint": "eslint src/**/*.{ts,tsx} --fix"
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
     "@zeit/react-jsx-parser": "^2.0.0",
