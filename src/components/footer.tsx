@@ -1,4 +1,4 @@
-import ExtLink from './ext-link'
+import ExtLink from "./ext-link";
 
 export default () => (
   <>
@@ -13,11 +13,11 @@ export default () => (
         />
       </ExtLink>
       <span>
-        or{' '}
+        or{" "}
         <ExtLink href="https://github.com/ijjk/notion-blog">
           view source
         </ExtLink>
       </span>
     </footer>
   </>
-)
+);

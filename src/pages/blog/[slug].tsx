@@ -170,7 +170,7 @@ const RenderPost = ({ post, redirect, preview }) => {
           const { type, properties, id, parent_id } = value
           const isLast = blockIdx === post.content.length - 1
           const isList = listTypes.has(type)
-          let toRender = []
+          const toRender = []
 
           if (isList) {
             listTagName = components[type === 'bulleted_list' ? 'ul' : 'ol']

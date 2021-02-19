@@ -1,46 +1,46 @@
-import Lightning from './svgs/lightning'
-import Jamstack from './svgs/jamstack'
-import Wifi from './svgs/wifi'
-import Lighthouse from './svgs/lighthouse'
-import Plus from './svgs/plus'
-import Notion from './svgs/notion'
-import Edit from './svgs/edit'
-import Scroll from './svgs/scroll'
+import Lightning from "./svgs/lightning";
+import Jamstack from "./svgs/jamstack";
+import Wifi from "./svgs/wifi";
+import Lighthouse from "./svgs/lighthouse";
+import Plus from "./svgs/plus";
+import Notion from "./svgs/notion";
+import Edit from "./svgs/edit";
+import Scroll from "./svgs/scroll";
 
 const features = [
   {
-    text: 'Blazing fast',
+    text: "Blazing fast",
     icon: Lightning,
   },
   {
-    text: 'JAMstack based',
+    text: "JAMstack based",
     icon: Jamstack,
   },
   {
-    text: 'Always available',
+    text: "Always available",
     icon: Wifi,
   },
   {
-    text: 'Customizable',
+    text: "Customizable",
     icon: Edit,
   },
   {
-    text: 'Incremental SSG',
+    text: "Incremental SSG",
     icon: Plus,
   },
   {
-    text: 'MIT Licensed',
+    text: "MIT Licensed",
     icon: Scroll,
   },
   {
-    text: 'Edit via Notion',
+    text: "Edit via Notion",
     icon: Notion,
   },
   {
-    text: 'Great scores',
+    text: "Great scores",
     icon: Lighthouse,
   },
-]
+];
 
 export default () => (
   <div className="features">
@@ -51,4 +51,4 @@ export default () => (
       </div>
     ))}
   </div>
-)
+);
