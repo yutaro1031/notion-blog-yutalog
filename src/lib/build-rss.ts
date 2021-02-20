@@ -14,11 +14,11 @@ process.env.USE_CACHE = "true";
 // constants
 const NOW = new Date().toJSON();
 
-function mapToAuthor(author) {
+function mapToAuthor(author: any) {
   return `<author><name>${author.full_name}</name></author>`;
 }
 
-function decode(string) {
+function decode(string: string) {
   return string
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -27,7 +27,7 @@ function decode(string) {
     .replace(/'/g, "&apos;");
 }
 
-function mapToEntry(post) {
+function mapToEntry(post: any) {
   return `
     <entry>
       <id>${post.link}</id>
@@ -38,7 +38,7 @@ function mapToEntry(post) {
         <div xmlns="http://www.w3.org/1999/xhtml">
           ${renderToStaticMarkup(
             post.preview
-              ? (post.preview || []).map((block, idx) =>
+              ? (post.preview || []).map((block: any, idx: number) =>
                   textBlock(block, false, post.title + idx)
                 )
               : post.content
@@ -52,7 +52,7 @@ function mapToEntry(post) {
     </entry>`;
 }
 
-function concat(total, item) {
+function concat(total: any, item: any) {
   return total + item;
 }
 
@@ -91,14 +91,14 @@ async function main() {
   const { users } = await getNotionUsers([...neededAuthors]);
 
   blogPosts.forEach((post) => {
-    post.authors = post.authors.map((id) => users[id]);
+    post.authors = post.authors.map((id: any) => users[id]);
     post.link = getBlogLink(post.Slug);
     post.title = post.Page;
     post.date = post.Date;
   });
 
   const outputPath = "./public/atom";
-  await writeFile(resolve(outputPath), createRSS(blogPosts));
+  await writeFile(resolve(outputPath), createRSS(blogPosts as any));
   console.log(`Atom feed file generated at \`${outputPath}\``);
 }
 

@@ -1,12 +1,12 @@
 import React from "react";
 import components from "../../components/dynamic";
 
-function applyTags(tags = [], children, noPTag = false, key) {
+function applyTags(tags = [], children: any, noPTag = false, key: number) {
   let child = children;
 
   for (const tag of tags) {
     const props: { [key: string]: any } = { key };
-    let tagName = tag[0];
+    let tagName: any = tag[0];
 
     if (noPTag && tagName === "p") tagName = React.Fragment;
     if (tagName === "c") tagName = "code";
@@ -22,13 +22,14 @@ function applyTags(tags = [], children, noPTag = false, key) {
       props.displayMode = false;
       child = tag[1];
     }
-
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     child = React.createElement(components[tagName] || tagName, props, child);
   }
   return child;
 }
 
-export function textBlock(text = [], noPTag = false, mainKey) {
+export function textBlock(text: any[] = [], noPTag = false, mainKey: any) {
   const children = [];
   let key = 0;
 
