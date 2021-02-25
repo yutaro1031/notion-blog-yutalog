@@ -38,7 +38,7 @@ export default async function getBlogIndex(
       postsTable = await getTableData(tableBlock, true);
     } catch (err) {
       console.warn(
-        `Failed to load Notion posts. Did you run "$ yarn create-table"?`
+        `Failed to load Notion posts. Did you run "$ NOTION_TOKEN='token' BLOG_INDEX_ID='new-page-id' node scripts/create-table.js"?`
       );
       return {};
     }
