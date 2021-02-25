@@ -5,7 +5,7 @@ const {
   BLOG_INDEX_ID: pageId,
   NOTION_TOKEN,
   API_ENDPOINT,
-} = require("./server-constants");
+} = require("../../constants/notion");
 
 async function main() {
   const userId = await getUserId();
