@@ -1,10 +1,9 @@
 import { Sema } from "async-sema";
 import rpc, { values } from "./rpc";
-import createTable from "./createTable";
 import getTableData from "./getTableData";
 import { getPostPreview } from "./getPostPreview";
 import { readFile, writeFile } from "../fs-helpers";
-import { BLOG_INDEX_ID, BLOG_INDEX_CACHE } from "./server-constants";
+import { BLOG_INDEX_ID, BLOG_INDEX_CACHE } from "../../constants/notion";
 
 export default async function getBlogIndex(
   previews = true
@@ -39,17 +38,8 @@ export default async function getBlogIndex(
       postsTable = await getTableData(tableBlock, true);
     } catch (err) {
       console.warn(
-        `Failed to load Notion posts, attempting to auto create table`
+        `Failed to load Notion posts. Did you run "$ NOTION_TOKEN='token' BLOG_INDEX_ID='new-page-id' node scripts/create-table.js"?`
       );
-      try {
-        await createTable();
-        console.log(`Successfully created table in Notion`);
-      } catch (err) {
-        console.error(
-          `Auto creating table failed, make sure you created a blank page and site the id with BLOG_INDEX_ID in your environment`,
-          err
-        );
-      }
       return {};
     }
 
