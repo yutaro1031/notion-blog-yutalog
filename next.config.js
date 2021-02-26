@@ -1,9 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const {
-  NOTION_TOKEN,
-  BLOG_INDEX_ID,
-} = require("./src/lib/notion/server-constants");
+const { NOTION_TOKEN, BLOG_INDEX_ID } = require("./src/constants/notion");
 
 try {
   fs.unlinkSync(path.resolve(".blog_index_data"));

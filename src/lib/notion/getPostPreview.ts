@@ -1,5 +1,4 @@
-import { loadPageChunk } from "./getPageData";
-import { values } from "./rpc";
+import rpc, { values } from "./rpc";
 
 const nonPreviewTypes = new Set(["editor", "page", "collection_view"]);
 
@@ -7,7 +6,13 @@ export async function getPostPreview(pageId: string) {
   let blocks;
   let dividerIndex = 0;
 
-  const data = await loadPageChunk({ pageId, limit: 10 });
+  const data = await rpc("loadPageChunk", {
+    pageId,
+    limit: 10,
+    cursor: { stack: [] },
+    chunkNumber: 0,
+    verticalColumns: false,
+  });
   blocks = values(data.recordMap.block);
 
   for (let i = 0; i < blocks.length; i++) {
