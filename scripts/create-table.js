@@ -101,6 +101,7 @@ async function main() {
               format: {
                 table_properties: [
                   { property: "title", visible: true, width: 276 },
+                  { property: "description", visible: true },
                   { property: 'S6_"', visible: true },
                   { property: "la`A", visible: true },
                   { property: "a`af", visible: true },
@@ -126,6 +127,7 @@ async function main() {
               id: collectionViewId,
               schema: {
                 title: { name: "Page", type: "title" },
+                description: { name: "Description", type: "text" },
                 'S6_"': { name: "Slug", type: "text" },
                 "la`A": { name: "Published", type: "checkbox" },
                 "a`af": { name: "Date", type: "date" },
@@ -133,6 +135,7 @@ async function main() {
               },
               format: {
                 collection_page_properties: [
+                  { property: "description", visible: true },
                   { property: 'S6_"', visible: true },
                   { property: "la`A", visible: true },
                   { property: "a`af", visible: true },

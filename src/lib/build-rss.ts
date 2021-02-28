@@ -2,7 +2,6 @@ import { resolve } from "path";
 import { writeFile } from "./fs-helpers";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { textBlock } from "./notion/renderers";
 import getBlogIndex from "./notion/getBlogIndex";
 import getNotionUsers from "./notion/getNotionUsers";
 import { postIsPublished, getBlogLink } from "./blog-helpers";
@@ -36,13 +35,7 @@ function mapToEntry(post: any) {
       <updated>${new Date(post.date).toJSON()}</updated>
       <content type="xhtml">
         <div xmlns="http://www.w3.org/1999/xhtml">
-          ${renderToStaticMarkup(
-            post.preview
-              ? (post.preview || []).map((block: any, idx: number) =>
-                  textBlock(block, false, post.title + idx)
-                )
-              : post.content
-          )}
+          ${renderToStaticMarkup(post.description || "")}
           <p class="more">
             <a href="${post.link}">Read more</a>
           </p>
@@ -71,7 +64,7 @@ function createRSS(blogPosts = []) {
 }
 
 async function main() {
-  const postsTable = await getBlogIndex(true);
+  const postsTable = await getBlogIndex();
   const neededAuthors = new Set<string>();
 
   const blogPosts = Object.keys(postsTable)
@@ -95,6 +88,7 @@ async function main() {
     post.link = getBlogLink(post.Slug);
     post.title = post.Page;
     post.date = post.Date;
+    post.description = post.Description;
   });
 
   const outputPath = "./public/atom";
