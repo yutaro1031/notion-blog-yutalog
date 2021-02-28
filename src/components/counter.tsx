@@ -1,10 +1,10 @@
 import { FC, useState } from "react";
 
-interface Props {
+export interface CounterProps {
   initialValue: number;
 }
 
-const Counter: FC<Props> = ({ initialValue }) => {
+const Counter: FC<CounterProps> = ({ initialValue }) => {
   const [clicks, setClicks] = useState(initialValue);
 
   return (

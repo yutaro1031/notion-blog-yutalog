@@ -16,12 +16,12 @@ function render(expression: string, displayMode: boolean): string {
   return result;
 }
 
-interface Props {
+export interface EquationProps {
   displayMode?: boolean;
   children: string;
 }
 
-const Equation: FC<Props> = ({ children, displayMode = true }) => {
+const Equation: FC<EquationProps> = ({ children, displayMode = true }) => {
   return (
     <span
       dangerouslySetInnerHTML={{

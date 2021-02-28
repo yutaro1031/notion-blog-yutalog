@@ -2,12 +2,12 @@ import { FC } from "react";
 import Prism from "prismjs";
 import "prismjs/components/prism-jsx";
 
-interface Props {
+export interface CodeProps {
   language?: string;
   children: string;
 }
 
-const Code: FC<Props> = ({ children, language = "javascript" }) => {
+const Code: FC<CodeProps> = ({ children, language = "javascript" }) => {
   return (
     <>
       <pre>
