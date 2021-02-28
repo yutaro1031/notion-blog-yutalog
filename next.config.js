@@ -43,17 +43,17 @@ module.exports = {
 
   webpack(cfg, { dev, isServer }) {
     // only compile build-rss in production server build
-    if (dev || !isServer) return cfg;
+    if (!dev && isServer) {
+      // we're in build mode so enable shared caching for Notion data
+      process.env.USE_CACHE = "true";
 
-    // we're in build mode so enable shared caching for Notion data
-    process.env.USE_CACHE = "true";
-
-    const originalEntry = cfg.entry;
-    cfg.entry = async () => {
-      const entries = { ...(await originalEntry()) };
-      entries["./scripts/build-rss.js"] = "./src/lib/build-rss.ts";
-      return entries;
-    };
+      const originalEntry = cfg.entry;
+      cfg.entry = async () => {
+        const entries = { ...(await originalEntry()) };
+        entries["./scripts/build-rss.js"] = "./src/lib/build-rss.ts";
+        return entries;
+      };
+    }
     return cfg;
   },
 };
