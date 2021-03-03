@@ -1,8 +1,9 @@
-import rpc, { values } from "./rpc";
+import { notionApiClient } from "./openApi";
+import { values } from "./rpc";
 
 export default async function getPageData(pageId: string) {
   try {
-    const data = await rpc("loadPageChunk", {
+    const { data } = await notionApiClient.loadPageChunk({
       pageId,
       limit: 100,
       cursor: { stack: [] },

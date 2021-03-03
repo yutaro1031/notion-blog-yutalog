@@ -1,7 +1,7 @@
-import rpc from "./rpc";
+import { notionApiClient } from "./openApi";
 
 export default async function getNotionUsers(ids: string[]) {
-  const { results = [] } = await rpc("getRecordValues", {
+  const { data } = await notionApiClient.getRecordValues({
     requests: ids.map((id: string) => ({
       id,
       table: "notion_user",
@@ -10,7 +10,7 @@ export default async function getNotionUsers(ids: string[]) {
 
   const users: any = {};
 
-  for (const result of results) {
+  for (const result of data.results) {
     const { value } = result || { value: {} };
     const { given_name, family_name } = value;
     let full_name = given_name || "";

@@ -1,7 +1,8 @@
-import rpc, { values } from "./rpc";
+import { values } from "./rpc";
 import getTableData from "./getTableData";
 import { readFile, writeFile } from "../fs-helpers";
 import { BLOG_INDEX_ID, BLOG_INDEX_CACHE } from "../../constants/notion";
+import { notionApiClient } from "./openApi";
 
 export default async function getBlogIndex(): Promise<
   { [key in string]: any }
@@ -19,7 +20,7 @@ export default async function getBlogIndex(): Promise<
 
   if (!postsTable) {
     try {
-      const data = await rpc("loadPageChunk", {
+      const { data } = await notionApiClient.loadPageChunk({
         pageId: BLOG_INDEX_ID,
         limit: 999, // TODO: figure out Notion's way of handling pagination
         cursor: { stack: [] },

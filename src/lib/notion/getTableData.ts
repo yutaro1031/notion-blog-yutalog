@@ -9,7 +9,7 @@ export default async function loadTable(collectionBlock: any, isPosts = false) {
 
   const { value } = collectionBlock;
   let table: any = {};
-  const col = await queryCollection({
+  const { data: col } = await queryCollection({
     collectionId: value.collection_id,
     collectionViewId: value.view_ids[0],
   });
@@ -19,7 +19,7 @@ export default async function loadTable(collectionBlock: any, isPosts = false) {
 
   const colId = Object.keys(col.recordMap.collection)[0];
   const schema = col.recordMap.collection[colId].value.schema;
-  const schemaKeys = Object.keys(schema);
+  const schemaKeys = Object.keys(schema || {});
 
   for (const entry of entries) {
     const props = entry.value && entry.value.properties;
@@ -50,7 +50,7 @@ export default async function loadTable(collectionBlock: any, isPosts = false) {
           case "p": // page (block)
             const page = col.recordMap.block[type[1]];
             row.id = page.value.id;
-            val = page.value.properties.title[0][0];
+            val = (page.value?.properties?.title as Array<any>)[0][0];
             break;
           case "d": // date
             // start_date: 2019-06-18
@@ -85,7 +85,7 @@ export default async function loadTable(collectionBlock: any, isPosts = false) {
       if (typeof val === "string") {
         val = val.trim();
       }
-      row[schema[key].name] = val || null;
+      row[(schema || {})[key].name] = val || null;
     });
 
     // auto-generate slug from title

@@ -1,0 +1,362 @@
+openapi: 3.0.0
+info:
+  title: Notion
+  description: Used internally by Notion
+  version: 0.0.1
+servers:
+  - url: https://www.notion.so/api/v3
+paths:
+  /loadPageChunk:
+    post:
+      operationId: loadPageChunk
+      summary: Get page data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - pageId
+                - limit
+                - cursor
+                - chunkNumber
+                - verticalColumns
+              properties:
+                pageId:
+                  type: string
+                  description: Notion page id
+                limit:
+                  type: number
+                cursor:
+                  type: object
+                chunkNumber:
+                  type: number
+                verticalColumns:
+                  type: boolean
+      responses:
+        "200":
+          description: Successed
+          content:
+            application/json:
+              schema: 
+                type: object
+                required:
+                  - recordMap
+                  - cursor
+                properties:
+                  recordMap:
+                    $ref: "#/components/schemas/RecordMap"
+                  cursor:
+                    type: object
+  /queryCollection:
+    post:
+      operationId: queryCollection
+      summary: Get table data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - collectionId
+                - collectionViewId
+                - loader
+                - query
+              properties:
+                collectionId:
+                  type: string
+                collectionViewId:
+                  type: string
+                loader:
+                  type: object
+                  properties:
+                    limit:
+                      type: number
+                    loadContentCover:
+                      type: boolean
+                    type:
+                      type: string
+                      enum:
+                        - table
+                    userTimeZone:
+                      type: string
+                      example: Asia/Tokyo
+                query:
+                  type: object
+                  required:
+                    - aggregations
+                  properties:
+                    aggregations:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                          - aggregator
+                          - property
+                        properties:
+                          aggregator:
+                            type: string
+                          property:
+                            type: string
+                    sort:
+                      type: object
+                      required:
+                        - property
+                        - direction
+                      properties:
+                        property:
+                          type: string
+                        direction:
+                          type: string
+                          enum:
+                            - descending
+                            - ascending
+      responses:
+        "200":
+          description: Successed
+          content:
+            application/json:
+              schema: 
+                type: object
+                required:
+                  - recordMap
+                  - result
+                properties:
+                  recordMap:
+                    $ref: "#/components/schemas/RecordMap"
+                  result:
+                    $ref: "#/components/schemas/Results"
+  /getRecordValues:
+    post:
+      operationId: getRecordValues
+      summary: Get various information from id & table
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - requests
+              properties:
+                requests:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - id
+                      - table
+                    properties:
+                      id:
+                        type: string
+                      table:
+                        type: string
+      responses:
+        "200":
+          description: Successed
+          content:
+            application/json:
+              schema: 
+                type: object
+                required:
+                  - results
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - role
+                        - value
+                      properties:
+                        role:
+                          type: string
+                        value:
+                          type: object
+                          required:
+                            - id
+                            - given_name
+                            - family_name
+                          properties:
+                            id:
+                              type: string
+                            given_name:
+                              type: string
+                            family_name:
+                              type: string
+  /getSignedFileUrls:
+    post:
+      operationId: getSignedFileUrls
+      summary: Get endpoint to asset file
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - urls
+              properties:
+                urls:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - url
+                      - permissionRecord
+                    properties:
+                      url:
+                        type: string
+                      permissionRecord:
+                        type: object
+                        required:
+                          - id
+                          - table
+                        properties:
+                          id:
+                            type: string
+                          table:
+                            type: string
+      responses:
+        "200":
+          description: Successed
+          content:
+            application/json:
+              schema: 
+                type: object
+                required:
+                  - signedUrls
+                properties:
+                  signedUrls:
+                    type: array
+                    items:
+                      type: string
+                          
+components:
+  schemas:
+    RecordMap:
+      description: Information on a single page
+      type: object
+      required:
+        - block
+        - space
+        - collection_view
+        - collection
+      properties:
+        block:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/Block"
+        space:
+          type: object
+        collection_view:
+          type: object
+        collection:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/Block"
+    Block:
+      description: Single block in page
+      type: object
+      required:
+        - role
+        - value
+      properties:
+        role:
+          type: string
+        value:
+          $ref: "#/components/schemas/Value"
+    Value:
+      description: Information on a single block
+      type: object
+      additionalProperties: true
+      required:
+        - id
+        - parent_id
+        - type
+      properties:
+        id:
+          type: string
+        parent_id:
+          type: string
+        collection_id:
+          type: string
+        type:
+          type: string
+          enum:
+            - page
+            - collection_view
+            - table
+        schema:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/Schema"
+        properties:
+          # e.g. hoge: [["‣", [["d", {type: "date", start_date: "2021-02-19"}]]]]
+          description: Properties of table row
+          type: object
+          additionalProperties: true
+          # MEMO: Nested array cannot be represented
+          # additionalProperties:
+          #   type: array
+          #   items:
+          #     type: array
+          #     items:
+          #       anyOf:
+          #         - type: string
+          #         - type: array
+          #           items:
+          #             type: array
+          #             items:
+          #               anyOf:
+          #                 - type: string
+          #                 - type: object
+    Schema:
+      description: Table schema
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - text
+            - date
+            - person
+            - checkbox
+            - title
+    Results:
+      description: The result of filtering the table
+      type: object
+      required:
+        - aggregationResults
+        - total
+        - blockIds
+        - type
+      properties:
+        aggregationResults:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - number
+            value:
+              oneOf:
+                - type: number
+                - type: string
+        type:
+          type: string
+          enum:
+            - table
+        blockIds:
+          type: array
+          items:
+            type: string
+        total:
+          type: number
