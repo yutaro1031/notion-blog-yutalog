@@ -1,5 +1,4 @@
 import { notionApiClient } from "./openApi";
-import { values } from "./rpc";
 
 export default async function getPageData(pageId: string) {
   try {
@@ -10,7 +9,7 @@ export default async function getPageData(pageId: string) {
       chunkNumber: 0,
       verticalColumns: false,
     });
-    const blocks = values(data.recordMap.block);
+    const blocks = Object.values(data.recordMap.block);
 
     if (blocks[0] && blocks[0].value.content) {
       // remove table blocks

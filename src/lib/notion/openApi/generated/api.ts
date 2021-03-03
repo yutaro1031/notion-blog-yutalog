@@ -570,6 +570,7 @@ export interface Value {
     */
 export enum ValueTypeEnum {
     Page = 'page',
+    Tweet = 'tweet',
     CollectionView = 'collection_view',
     Table = 'table'
 }

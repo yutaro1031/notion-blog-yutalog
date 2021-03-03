@@ -287,6 +287,7 @@ components:
           type: string
           enum:
             - page
+            - tweet
             - collection_view
             - table
         schema:

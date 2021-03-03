@@ -1,5 +1,4 @@
 /* eslint-disable no-case-declarations */
-import { values } from "./rpc";
 import Slugger from "github-slugger";
 import queryCollection from "./queryCollection";
 import { normalizeSlug } from "../blog-helpers";
@@ -13,7 +12,7 @@ export default async function loadTable(collectionBlock: any, isPosts = false) {
     collectionId: value.collection_id,
     collectionViewId: value.view_ids[0],
   });
-  const entries = values(col.recordMap.block).filter((block: any) => {
+  const entries = Object.values(col.recordMap.block).filter((block) => {
     return block.value && block.value.parent_id === value.collection_id;
   });
 
@@ -22,28 +21,28 @@ export default async function loadTable(collectionBlock: any, isPosts = false) {
   const schemaKeys = Object.keys(schema || {});
 
   for (const entry of entries) {
-    const props = entry.value && entry.value.properties;
     const row: any = {};
 
-    if (!props) continue;
+    if (!entry.value.properties) continue;
     if (entry.value.content) {
       row.id = entry.value.id;
     }
 
     schemaKeys.forEach((key) => {
+      const property = (entry.value?.properties as any)[key];
       // might be undefined
-      let val = props[key] && props[key][0][0];
+      let val = property && property[0][0];
 
       // authors and blocks are centralized
-      if (val && props[key][0][1]) {
-        const type = props[key][0][1][0];
+      if (val && property[0][1]) {
+        const type = property[0][1][0];
 
         switch (type[0]) {
           case "a": // link
             val = type[1];
             break;
           case "u": // user
-            val = props[key]
+            val = property
               .filter((arr: any[]) => arr.length > 1)
               .map((arr: any[]) => arr[1][0][1]);
             break;

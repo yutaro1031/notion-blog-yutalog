@@ -1,4 +1,3 @@
-import { values } from "./rpc";
 import getTableData from "./getTableData";
 import { readFile, writeFile } from "../fs-helpers";
 import {
@@ -32,8 +31,8 @@ export default async function getBlogIndex(): Promise<
       });
 
       // Parse table with posts
-      const tableBlock = values(data.recordMap.block).find(
-        (block: any) => block.value.type === "collection_view"
+      const tableBlock = Object.values(data.recordMap.block).find(
+        (block) => block.value.type === "collection_view"
       );
 
       postsTable = await getTableData(tableBlock, true);

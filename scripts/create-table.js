@@ -1,11 +1,20 @@
 // commonjs so it can be run without transpiling
 const { v4: uuid } = require("uuid");
-const fetch = require("node-fetch");
+const axiosBase = require("axios");
 const {
   NOTION_BLOG_INDEX_ID: pageId,
   NOTION_TOKEN,
   NOTION_API_ENDPOINT,
 } = require("../src/constants/notion");
+
+const axios = axiosBase.create({
+  baseURL: NOTION_API_ENDPOINT,
+  headers: {
+    "Content-Type": "application/json",
+    cookie: `token_v2=${NOTION_TOKEN}`,
+  },
+  responseType: "json",
+});
 
 async function main() {
   const userId = await getUserId();
@@ -313,42 +322,28 @@ async function main() {
     ],
   };
 
-  const res = await fetch(`${NOTION_API_ENDPOINT}/submitTransaction`, {
-    method: "POST",
-    headers: {
-      cookie: `token_v2=${NOTION_TOKEN}`,
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(requestBody),
-  });
+  const { status } = await axios.post(`/submitTransaction`, requestBody);
 
-  if (!res.ok) {
-    throw new Error(`Failed to add table, request status ${res.status}`);
+  if (status !== 200) {
+    throw new Error(`Failed to add table, request status ${status}`);
   }
 }
 
 async function getExistingexistingBlockId() {
-  const res = await fetch(`${NOTION_API_ENDPOINT}/loadPageChunk`, {
-    method: "POST",
-    headers: {
-      cookie: `token_v2=${NOTION_TOKEN}`,
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      pageId,
-      limit: 25,
-      cursor: { stack: [] },
-      chunkNumber: 0,
-      verticalColumns: false,
-    }),
+  const { status, data } = await axios.post(`/loadPageChunk`, {
+    pageId,
+    limit: 25,
+    cursor: { stack: [] },
+    chunkNumber: 0,
+    verticalColumns: false,
   });
+  console.log(JSON.stringify(data, null, "  "));
 
-  if (!res.ok) {
+  if (status !== 200) {
     throw new Error(
-      `failed to get existing block id, request status: ${res.status}`
+      `failed to get existing block id, request status: ${status}`
     );
   }
-  const data = await res.json();
   const id = Object.keys(data ? data.recordMap.block : {}).find(
     (id) => id !== pageId
   );
@@ -356,21 +351,11 @@ async function getExistingexistingBlockId() {
 }
 
 async function getUserId() {
-  const res = await fetch(`${NOTION_API_ENDPOINT}/loadUserContent`, {
-    method: "POST",
-    headers: {
-      cookie: `token_v2=${NOTION_TOKEN}`,
-      "content-type": "application/json",
-    },
-    body: "{}",
-  });
+  const { status, data } = await axios.post(`/loadUserContent`, {});
 
-  if (!res.ok) {
-    throw new Error(
-      `failed to get Notion user id, request status: ${res.status}`
-    );
+  if (status !== 200) {
+    throw new Error(`failed to get Notion user id, request status: ${status}`);
   }
-  const data = await res.json();
   return Object.keys(data.recordMap.notion_user)[0];
 }
 

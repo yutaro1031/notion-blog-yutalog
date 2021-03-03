@@ -1,6 +1,6 @@
 import { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
-import fetch from "node-fetch";
+import axios from "axios";
 import { useRouter } from "next/router";
 import Header from "../../components/header";
 import Heading from "../../components/heading";
@@ -52,18 +52,17 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   for (let i = 0; i < postData.blocks.length; i++) {
     const { value } = postData.blocks[i];
     const { type, properties } = value;
-    if (type === "tweet") {
-      const src = properties.source[0][0];
+    if (properties && type === "tweet") {
+      const src = (properties.source as any)[0][0];
       // parse id from https://twitter.com/_ijjk/status/TWEET_ID format
       const tweetId = src.split("/")[5].split("?")[0];
       if (!tweetId) continue;
 
       try {
-        const res = await fetch(
+        const { data } = await axios.get(
           `https://api.twitter.com/1/statuses/oembed.json?id=${tweetId}`
         );
-        const json = await res.json();
-        properties.html = json.html.split("<script")[0];
+        properties.html = data.html.split("<script")[0];
         post.hasTweet = true;
       } catch (_) {
         console.log(`Failed to get tweet embed for ${src}`);
