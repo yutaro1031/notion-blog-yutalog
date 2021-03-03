@@ -14,13 +14,13 @@ To view the steps to setup Notion to work with this example view the post at htt
 
 Deploy your own Notion blog with Vercel.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/git?s=https://github.com/ijjk/notion-blog/tree/master&env=NOTION_TOKEN,BLOG_INDEX_ID&envDescription=Required+env+values+for+deploying&envLink=https://github.com/ijjk/notion-blog%23getting-blog-index-and-token)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/git?s=https://github.com/ijjk/notion-blog/tree/master&env=NOTION_TOKEN,NOTION_BLOG_INDEX_ID&envDescription=Required+env+values+for+deploying&envLink=https://github.com/ijjk/notion-blog%23getting-blog-index-and-token)
 
 or
 
 1. Clone this repo `git clone https://github.com/ijjk/notion-blog.git`
 2. Configure project with [`vc`](https://vercel.com/download)
-3. Add your `NOTION_TOKEN` and `BLOG_INDEX_ID` as environment variables in [your project](https://vercel.com/docs/integrations?query=envir#project-level-apis/project-based-environment-variables). See [here](#getting-blog-index-and-token) for how to find these values
+3. Add your `NOTION_TOKEN` and `NOTION_BLOG_INDEX_ID` as environment variables in [your project](https://vercel.com/docs/integrations?query=envir#project-level-apis/project-based-environment-variables). See [here](#getting-blog-index-and-token) for how to find these values
 4. Do final deployment with `vc`
 
 Note: if redeploying with `vc` locally and you haven't made any changes to the application's source and only edited in Notion you will need use `vc -f` to bypass build de-duping
@@ -34,7 +34,7 @@ Note: if redeploying with `vc` locally and you haven't made any changes to the a
 1. Create a blank page in Notion
 2. Clone this repo `git clone https://github.com/ijjk/notion-blog.git`
 3. Install dependencies `cd notion-blog && yarn`
-4. Run script to create table `NOTION_TOKEN='token' BLOG_INDEX_ID='new-page-id' node scripts/create-table.js` See [here](#getting-blog-index-and-token) for finding the id for the new page
+4. Run script to create table `NOTION_TOKEN='token' NOTION_BLOG_INDEX_ID='new-page-id' node scripts/create-table.js` See [here](#getting-blog-index-and-token) for finding the id for the new page
 
 ### Manually Creating the Table
 
@@ -56,8 +56,8 @@ The table should have the following properties:
 
 To get your blog index value, open Notion and Navigate to the Notion page with the table you created above. While on this page you should be able to get the page id from either:
 
-- the URL, if the URL of your page is https://www.notion.so/Blog-S5qv1QbUzM1wxm3H3SZRQkupi7XjXTul then your `BLOG_INDEX_ID` is `S5qv1QbU-zM1w-xm3H-3SZR-Qkupi7XjXTul`
-- the `loadPageChunk` request, if you open your developer console and go to the network tab then reload the page you should see a request for `loadPageChunk` and in the request payload you should see a `pageId` and that is your `BLOG_INDEX_ID`
+- the URL, if the URL of your page is https://www.notion.so/Blog-S5qv1QbUzM1wxm3H3SZRQkupi7XjXTul then your `NOTION_BLOG_INDEX_ID` is `S5qv1QbU-zM1w-xm3H-3SZR-Qkupi7XjXTul`
+- the `loadPageChunk` request, if you open your developer console and go to the network tab then reload the page you should see a request for `loadPageChunk` and in the request payload you should see a `pageId` and that is your `NOTION_BLOG_INDEX_ID`
 
 To get your Notion token, open Notion and look for the `token_v2` cookie.
 
@@ -74,7 +74,7 @@ To get your Notion token, open Notion and look for the `token_v2` cookie.
 To run the project locally you need to follow steps 1 and 2 of [deploying](#deploy-your-own) and then follow the below steps
 
 1. Install dependencies `yarn`
-2. Expose `NOTION_TOKEN` and `BLOG_INDEX_ID` in your environment `export NOTION_TOKEN='<your-token>'`and `export BLOG_INDEX_ID='<your-blog-index-id>'` or `set NOTION_TOKEN="<your-token>" && set BLOG_INDEX_ID="<your-blog-index-id>"` for Windows
+2. Expose `NOTION_TOKEN` and `NOTION_BLOG_INDEX_ID` in your environment `export NOTION_TOKEN='<your-token>'`and `export NOTION_BLOG_INDEX_ID='<your-blog-index-id>'` or `set NOTION_TOKEN="<your-token>" && set NOTION_BLOG_INDEX_ID="<your-blog-index-id>"` for Windows
 3. Run next in development mode `yarn dev`
 4. Build and run in production mode `yarn build && yarn start`
 

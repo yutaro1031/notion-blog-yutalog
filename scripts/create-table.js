@@ -2,9 +2,9 @@
 const { v4: uuid } = require("uuid");
 const fetch = require("node-fetch");
 const {
-  BLOG_INDEX_ID: pageId,
+  NOTION_BLOG_INDEX_ID: pageId,
   NOTION_TOKEN,
-  API_ENDPOINT,
+  NOTION_API_ENDPOINT,
 } = require("../src/constants/notion");
 
 async function main() {
@@ -313,7 +313,7 @@ async function main() {
     ],
   };
 
-  const res = await fetch(`${API_ENDPOINT}/submitTransaction`, {
+  const res = await fetch(`${NOTION_API_ENDPOINT}/submitTransaction`, {
     method: "POST",
     headers: {
       cookie: `token_v2=${NOTION_TOKEN}`,
@@ -328,7 +328,7 @@ async function main() {
 }
 
 async function getExistingexistingBlockId() {
-  const res = await fetch(`${API_ENDPOINT}/loadPageChunk`, {
+  const res = await fetch(`${NOTION_API_ENDPOINT}/loadPageChunk`, {
     method: "POST",
     headers: {
       cookie: `token_v2=${NOTION_TOKEN}`,
@@ -356,7 +356,7 @@ async function getExistingexistingBlockId() {
 }
 
 async function getUserId() {
-  const res = await fetch(`${API_ENDPOINT}/loadUserContent`, {
+  const res = await fetch(`${NOTION_API_ENDPOINT}/loadUserContent`, {
     method: "POST",
     headers: {
       cookie: `token_v2=${NOTION_TOKEN}`,

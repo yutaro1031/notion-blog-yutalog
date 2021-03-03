@@ -1,6 +1,9 @@
 const fs = require("fs");
 const path = require("path");
-const { NOTION_TOKEN, BLOG_INDEX_ID } = require("./src/constants/notion");
+const {
+  NOTION_TOKEN,
+  NOTION_BLOG_INDEX_ID,
+} = require("./src/constants/notion");
 
 try {
   fs.unlinkSync(path.resolve(".blog_index_data"));
@@ -29,7 +32,7 @@ if (!NOTION_TOKEN) {
   );
 }
 
-if (!BLOG_INDEX_ID) {
+if (!NOTION_BLOG_INDEX_ID) {
   // We aren't able to build or serve images from Notion without the
   // NOTION_TOKEN being populated
   warnOrError(
@@ -40,20 +43,4 @@ if (!BLOG_INDEX_ID) {
 
 module.exports = {
   target: "experimental-serverless-trace",
-
-  webpack(cfg, { dev, isServer }) {
-    // only compile build-rss in production server build
-    if (!dev && isServer) {
-      // we're in build mode so enable shared caching for Notion data
-      process.env.USE_CACHE = "true";
-
-      const originalEntry = cfg.entry;
-      cfg.entry = async () => {
-        const entries = { ...(await originalEntry()) };
-        entries["./scripts/build-rss.js"] = "./src/lib/build-rss.ts";
-        return entries;
-      };
-    }
-    return cfg;
-  },
 };
