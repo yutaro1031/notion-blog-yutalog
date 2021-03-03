@@ -9,7 +9,7 @@ import {
   getBlogLink,
   getDateStr,
   postIsPublished,
-} from "../../lib/blog-helpers";
+} from "../../lib/blogHelpers";
 import getNotionUsers from "../../lib/notion/getNotionUsers";
 import getBlogIndex from "../../lib/notion/getBlogIndex";
 

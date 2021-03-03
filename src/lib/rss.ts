@@ -1,6 +1,6 @@
 import RSS from "rss";
 import getBlogIndex from "./notion/getBlogIndex";
-import { postIsPublished, getBlogLink } from "./blog-helpers";
+import { postIsPublished, getBlogLink } from "./blogHelpers";
 import {
   BLOG_DESCRIPTION,
   BLOG_TITLE,

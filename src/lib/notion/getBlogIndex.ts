@@ -1,5 +1,5 @@
 import getTableData from "./getTableData";
-import { readFile, writeFile } from "../fs-helpers";
+import { readFile, writeFile } from "../fsHelpers";
 import {
   NOTION_BLOG_INDEX_ID,
   NOTION_BLOG_INDEX_CACHE,
