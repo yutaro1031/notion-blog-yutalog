@@ -111,10 +111,10 @@ async function main() {
                 table_properties: [
                   { property: "title", visible: true, width: 276 },
                   { property: "description", visible: true },
-                  { property: 'S6_"', visible: true },
-                  { property: "la`A", visible: true },
-                  { property: "a`af", visible: true },
-                  { property: "ijjk", visible: true },
+                  { property: "slug", visible: true },
+                  { property: "published", visible: true },
+                  { property: "date", visible: true },
+                  { property: "authors", visible: true },
                 ],
                 table_wrap: true,
               },
@@ -137,18 +137,18 @@ async function main() {
               schema: {
                 title: { name: "Page", type: "title" },
                 description: { name: "Description", type: "text" },
-                'S6_"': { name: "Slug", type: "text" },
-                "la`A": { name: "Published", type: "checkbox" },
-                "a`af": { name: "Date", type: "date" },
-                ijjk: { name: "Authors", type: "person" },
+                slug: { name: "Slug", type: "text" },
+                published: { name: "Published", type: "checkbox" },
+                date: { name: "Date", type: "date" },
+                authors: { name: "Authors", type: "person" },
               },
               format: {
                 collection_page_properties: [
                   { property: "description", visible: true },
-                  { property: 'S6_"', visible: true },
-                  { property: "la`A", visible: true },
-                  { property: "a`af", visible: true },
-                  { property: "ijjk", visible: true },
+                  { property: "slug", visible: true },
+                  { property: "published", visible: true },
+                  { property: "date", visible: true },
+                  { property: "authors", visible: true },
                 ],
               },
               parent_id: collectionId,
@@ -337,7 +337,6 @@ async function getExistingexistingBlockId() {
     chunkNumber: 0,
     verticalColumns: false,
   });
-  console.log(JSON.stringify(data, null, "  "));
 
   if (status !== 200) {
     throw new Error(
