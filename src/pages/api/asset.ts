@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getNotionAssetUrls } from "../../lib/notion/getNotionAssetUrls";
-import { setHeaders, handleData, handleError } from "../../lib/notion/utils";
+import { setHeaders, handleData, handleError } from "../../lib/responseHelpers";
 
 export default async function notionApi(
   req: NextApiRequest,
