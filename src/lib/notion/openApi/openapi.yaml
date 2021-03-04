@@ -101,18 +101,20 @@ paths:
                           property:
                             type: string
                     sort:
-                      type: object
-                      required:
-                        - property
-                        - direction
-                      properties:
-                        property:
-                          type: string
-                        direction:
-                          type: string
-                          enum:
-                            - descending
-                            - ascending
+                      type: array
+                      items:
+                        type: object
+                        required:
+                          - property
+                          - direction
+                        properties:
+                          property:
+                            type: string
+                          direction:
+                            type: string
+                            enum:
+                              - descending
+                              - ascending
       responses:
         "200":
           description: Successed

@@ -1,17 +1,15 @@
-import getTableData from "./getTableData";
 import { readFile, writeFile } from "../fsHelpers";
 import {
   NOTION_BLOG_INDEX_ID,
   NOTION_BLOG_INDEX_CACHE,
 } from "../../constants/notion";
 import { notionApiClient } from "./openApi";
+import { getArticleTableData } from "./getArticleTableData";
+import { ArticleTable } from "./types";
 
-export default async function getBlogIndex(): Promise<
-  { [key in string]: any }
-> {
-  let postsTable: any = null;
+export const getBlogIndex = async (): Promise<ArticleTable> => {
+  let postsTable: ArticleTable = {};
   const useCache = process.env.USE_CACHE === "true";
-
   if (useCache) {
     try {
       postsTable = JSON.parse(await readFile(NOTION_BLOG_INDEX_CACHE, "utf8"));
@@ -20,7 +18,7 @@ export default async function getBlogIndex(): Promise<
     }
   }
 
-  if (!postsTable) {
+  if (Object.keys(postsTable).length === 0) {
     try {
       const { data } = await notionApiClient.loadPageChunk({
         pageId: NOTION_BLOG_INDEX_ID,
@@ -34,8 +32,9 @@ export default async function getBlogIndex(): Promise<
       const tableBlock = Object.values(data.recordMap.block).find(
         (block) => block.value.type === "collection_view"
       );
+      if (!tableBlock) return {};
 
-      postsTable = await getTableData(tableBlock, true);
+      postsTable = await getArticleTableData(tableBlock);
     } catch (err) {
       console.warn(
         `Failed to load Notion posts. Did you run "$ NOTION_TOKEN='token' NOTION_BLOG_INDEX_ID='new-page-id' node scripts/create-table.js"?`
@@ -53,4 +52,4 @@ export default async function getBlogIndex(): Promise<
   }
 
   return postsTable;
-}
+};

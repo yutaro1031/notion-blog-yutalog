@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import getNotionAssetUrls from "../../lib/notion/getNotionAssetUrls";
+import { getNotionAssetUrls } from "../../lib/notion/getNotionAssetUrls";
 import { setHeaders, handleData, handleError } from "../../lib/notion/utils";
 
 export default async function notionApi(
@@ -17,22 +17,17 @@ export default async function notionApi(
       });
     } else {
       // we need to re-encode it since it's decoded when added to req.query
-      const { signedUrls = [], ...urlsResponse } = await getNotionAssetUrls(
-        res,
-        assetUrl,
-        blockId
-      );
+      const urls = await getNotionAssetUrls(assetUrl, blockId);
 
-      if (signedUrls.length === 0) {
-        console.error("Failed to get signedUrls", urlsResponse);
+      if (urls.length === 0) {
+        console.error("Failed to get urls");
         return handleData(res, {
           status: "error",
           message: "Failed to get asset URL",
         });
       }
-
       res.status(307);
-      res.setHeader("Location", signedUrls.pop() || "");
+      res.setHeader("Location", urls[0] || "");
       res.end();
     }
   } catch (error) {

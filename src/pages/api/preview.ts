@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import getBlogIndex from "../../lib/notion/getBlogIndex";
+import { getBlogIndex } from "../../lib/notion/getBlogIndex";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (typeof req.query.token !== "string") {

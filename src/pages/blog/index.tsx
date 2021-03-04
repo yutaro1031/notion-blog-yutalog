@@ -10,8 +10,8 @@ import {
   getDateStr,
   postIsPublished,
 } from "../../lib/blogHelpers";
-import getNotionUsers from "../../lib/notion/getNotionUsers";
-import getBlogIndex from "../../lib/notion/getBlogIndex";
+import { getNotionUsers } from "../../lib/notion/getNotionUsers";
+import { getBlogIndex } from "../../lib/notion/getBlogIndex";
 
 interface Props {
   preview: boolean;

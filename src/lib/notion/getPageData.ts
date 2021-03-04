@@ -1,6 +1,6 @@
 import { notionApiClient } from "./openApi";
 
-export default async function getPageData(pageId: string) {
+export const getPageData = async (pageId: string) => {
   try {
     const { data } = await notionApiClient.loadPageChunk({
       pageId,
@@ -21,4 +21,4 @@ export default async function getPageData(pageId: string) {
     console.error(`Failed to load pageData for ${pageId}`, err);
     return { blocks: [] };
   }
-}
+};

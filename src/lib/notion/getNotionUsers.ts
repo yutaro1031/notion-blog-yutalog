@@ -1,6 +1,12 @@
 import { notionApiClient } from "./openApi";
 
-export default async function getNotionUsers(ids: string[]) {
+type Users = {
+  [id in string]: {
+    full_name: string;
+  };
+};
+
+export const getNotionUsers = async (ids: string[]) => {
   const { data } = await notionApiClient.getRecordValues({
     requests: ids.map((id: string) => ({
       id,
@@ -8,18 +14,16 @@ export default async function getNotionUsers(ids: string[]) {
     })),
   });
 
-  const users: any = {};
+  const users: Users = {};
 
   for (const result of data.results) {
-    const { value } = result || { value: {} };
-    const { given_name, family_name } = value;
-    let full_name = given_name || "";
-
+    const { id, given_name, family_name } = result.value;
+    let full_name = given_name;
     if (family_name) {
       full_name = `${full_name} ${family_name}`;
     }
-    users[value.id] = { full_name };
+    users[id] = { full_name };
   }
 
   return { users };
-}
+};

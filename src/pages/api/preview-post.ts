@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import getPageData from "../../lib/notion/getPageData";
-import getBlogIndex from "../../lib/notion/getBlogIndex";
 import { getBlogLink } from "../../lib/blogHelpers";
+import { getBlogIndex } from "../../lib/notion/getBlogIndex";
+import { getPageData } from "../../lib/notion/getPageData";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (typeof req.query.token !== "string") {

@@ -1,13 +1,9 @@
-import { NextApiResponse } from "next";
 import { notionApiClient } from "./openApi";
 
-export default async function getNotionAsset(
-  res: NextApiResponse,
+export const getNotionAssetUrls = async (
   assetUrl: string,
   blockId: string
-): Promise<{
-  signedUrls: string[];
-}> {
+): Promise<string[]> => {
   const assetRes = await notionApiClient.getSignedFileUrls({
     urls: [
       {
@@ -20,15 +16,5 @@ export default async function getNotionAsset(
     ],
   });
 
-  if (assetRes.status === 200) {
-    return assetRes.data;
-  } else {
-    console.log("bad request", assetRes.status);
-    res.json({ status: "error", message: "failed to load Notion asset" });
-    throw new Error(
-      `Notion API error (${assetRes.status})\n${JSON.stringify(
-        assetRes.headers
-      )}\n${JSON.stringify(assetRes.data)}`
-    );
-  }
-}
+  return assetRes.data.signedUrls;
+};

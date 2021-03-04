@@ -334,10 +334,10 @@ export interface QueryCollectionQuery {
     aggregations: Array<QueryCollectionQueryAggregations>;
     /**
      * 
-     * @type {QueryCollectionQuerySort}
+     * @type {Array<QueryCollectionQuerySort>}
      * @memberof QueryCollectionQuery
      */
-    sort?: QueryCollectionQuerySort;
+    sort?: Array<QueryCollectionQuerySort>;
 }
 /**
  * 

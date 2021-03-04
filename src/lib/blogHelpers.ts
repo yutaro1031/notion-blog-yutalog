@@ -13,18 +13,3 @@ export const getDateStr = (date: number | string | Date) => {
 export const postIsPublished = (post: any) => {
   return post.Published === "Yes";
 };
-
-export const normalizeSlug = (slug: any): string => {
-  if (typeof slug !== "string") return slug;
-
-  const startingSlash = slug.startsWith("/");
-  const endingSlash = slug.endsWith("/");
-
-  if (startingSlash) {
-    slug = slug.substr(1);
-  }
-  if (endingSlash) {
-    slug = slug.substr(0, slug.length - 1);
-  }
-  return startingSlash || endingSlash ? normalizeSlug(slug) : slug;
-};

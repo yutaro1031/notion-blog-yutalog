@@ -8,11 +8,11 @@ import components from "../../components/dynamic";
 import ReactJSXParser from "@zeit/react-jsx-parser";
 import blogStyles from "../../styles/blog.module.css";
 import { textBlock } from "../../lib/notion/renderers";
-import getPageData from "../../lib/notion/getPageData";
 import React, { CSSProperties, useEffect } from "react";
-import getBlogIndex from "../../lib/notion/getBlogIndex";
-import getNotionUsers from "../../lib/notion/getNotionUsers";
 import { getBlogLink, getDateStr } from "../../lib/blogHelpers";
+import { getPageData } from "../../lib/notion/getPageData";
+import { getNotionUsers } from "../../lib/notion/getNotionUsers";
+import { getBlogIndex } from "../../lib/notion/getBlogIndex";
 
 interface Props {
   redirect?: string;

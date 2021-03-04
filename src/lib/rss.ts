@@ -1,5 +1,4 @@
 import RSS from "rss";
-import getBlogIndex from "./notion/getBlogIndex";
 import { postIsPublished, getBlogLink } from "./blogHelpers";
 import {
   BLOG_DESCRIPTION,
@@ -8,6 +7,7 @@ import {
   BLOG_RSS_FEED_URL,
   BLOG_LANGUAGE,
 } from "../constants/blog";
+import { getBlogIndex } from "./notion/getBlogIndex";
 
 export const generateFeedXml = async () => {
   const feed = new RSS({
@@ -19,23 +19,18 @@ export const generateFeedXml = async () => {
   });
 
   const postsTable = await getBlogIndex();
-  const blogPosts = Object.keys(postsTable)
-    .map((slug) => {
-      const post = postsTable[slug];
-      if (postIsPublished(post)) {
-        return post;
-      }
-    })
-    .filter(Boolean);
+  const blogPosts = Object.values(postsTable).filter((post) =>
+    postIsPublished(post)
+  );
 
-  blogPosts.forEach((post) => {
+  for (const post of blogPosts) {
     feed.item({
       title: post.Page,
       description: post.Description,
-      date: post.Date,
+      date: `${post.Date}`,
       url: getBlogLink(post.Slug),
     });
-  });
+  }
 
   return feed.xml();
 };
