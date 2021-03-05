@@ -22,7 +22,7 @@ export const getBlogIndex = async (): Promise<ArticleTable> => {
     try {
       const { data } = await notionApiClient.loadPageChunk({
         pageId: NOTION_BLOG_INDEX_ID,
-        limit: 999, // TODO: figure out Notion's way of handling pagination
+        limit: 100, // TODO: figure out Notion's way of handling pagination
         cursor: { stack: [] },
         chunkNumber: 0,
         verticalColumns: false,
