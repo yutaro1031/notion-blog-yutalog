@@ -1,4 +1,4 @@
-import { readFile, writeFile } from "../fsHelpers";
+import { readFile, writeFile } from "../fs";
 import {
   NOTION_BLOG_INDEX_ID,
   NOTION_BLOG_INDEX_CACHE,

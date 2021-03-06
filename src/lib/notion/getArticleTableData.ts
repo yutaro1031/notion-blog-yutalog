@@ -1,6 +1,11 @@
 import { Block } from "./openApi/generated";
 import { queryCollection } from "./queryCollection";
-import { ArticleTable, TableBlockValue, ArticleTableRow } from "./types";
+import {
+  ArticleTable,
+  TableBlockValue,
+  ArticleTableRow,
+  PropertyValue,
+} from "./types";
 
 export const getArticleTableData = async (
   tableBlock: Block
@@ -36,9 +41,7 @@ export const getArticleTableData = async (
   return table;
 };
 
-const getValueFromProperty = (
-  property: TableBlockValue["properties"][keyof TableBlockValue["properties"]]
-): any => {
+const getValueFromProperty = (property: PropertyValue): any => {
   // e.g. property = [["test"]]
   if (property && property[0][0] && !property[0][1]) return property[0][0];
 
@@ -56,7 +59,7 @@ const getValueFromProperty = (
       if (!type[1].start_date) return null;
       return new Date(type[1].start_date).getTime();
     default:
-      console.error("unknown type", type[0], type);
+      console.warn("unknown property type", type[0], type);
       return null;
   }
 };

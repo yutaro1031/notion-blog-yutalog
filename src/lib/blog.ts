@@ -1,3 +1,5 @@
+import { ArticleTableRow } from "./notion/types";
+
 export const getBlogLink = (slug: string) => {
   return `/blog/${slug}`;
 };
@@ -10,6 +12,6 @@ export const getDateStr = (date: number | string | Date) => {
   });
 };
 
-export const postIsPublished = (post: any) => {
+export const postIsPublished = (post: ArticleTableRow) => {
   return post.Published === "Yes";
 };

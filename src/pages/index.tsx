@@ -1,5 +1,5 @@
-import Header from "../components/header";
-import ExtLink from "../components/ext-link";
+import Header from "../components/atom/header";
+import ExtLink from "../components/atom/ext-link";
 import sharedStyles from "../styles/shared.module.css";
 
 const IndexPage = () => (

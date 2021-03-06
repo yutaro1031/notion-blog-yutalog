@@ -1,48 +1,41 @@
 import { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
-import Header from "../../components/header";
+import Header from "../../components/atom/header";
 
 import blogStyles from "../../styles/blog.module.css";
 import sharedStyles from "../../styles/shared.module.css";
 
-import {
-  getBlogLink,
-  getDateStr,
-  postIsPublished,
-} from "../../lib/blogHelpers";
+import { getBlogLink, getDateStr, postIsPublished } from "../../lib/blog";
 import { getNotionUsers } from "../../lib/notion/getNotionUsers";
 import { getBlogIndex } from "../../lib/notion/getBlogIndex";
+import { PreviewAlert } from "../../components/atom/previewAlert";
+import { ArticleTableRow } from "../../lib/notion/types";
 
 interface Props {
   preview: boolean;
-  posts: any[];
+  posts?: {
+    meta: ArticleTableRow;
+    authors: string[];
+  }[];
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ preview }) => {
   const postsTable = await getBlogIndex();
 
   const authorsToGet: Set<string> = new Set();
-  const posts: any[] = Object.keys(postsTable)
-    .map((slug) => {
-      const post = postsTable[slug];
-      // remove draft posts in production
-      if (!preview && !postIsPublished(post)) {
-        return null;
-      }
-      post.Authors = post.Authors || [];
-      for (const author of post.Authors) {
-        authorsToGet.add(author);
-      }
-      return post;
-    })
-    .filter(Boolean);
+  const postMetas = Object.values(postsTable).filter((post) => {
+    for (const author of post.Authors) {
+      authorsToGet.add(author);
+    }
+    return preview || postIsPublished(post);
+  });
 
   const { users } = await getNotionUsers([...authorsToGet]);
 
-  posts.map((post) => {
-    post.Authors = post.Authors.map((id: any) => users[id].full_name);
-  });
-
+  const posts = postMetas.map((meta) => ({
+    meta,
+    authors: meta.Authors.map((id: any) => users[id].full_name),
+  }));
   return {
     props: {
       preview: preview || false,
@@ -56,17 +49,7 @@ const BlogIndex: NextPage<Props> = ({ posts = [], preview }) => {
   return (
     <>
       <Header titlePre="Blog" />
-      {preview && (
-        <div className={blogStyles.previewAlertContainer}>
-          <div className={blogStyles.previewAlert}>
-            <b>Note:</b>
-            {` `}Viewing in preview mode{" "}
-            <Link href={`/api/clear-preview`}>
-              <button className={blogStyles.escapePreview}>Exit Preview</button>
-            </Link>
-          </div>
-        </div>
-      )}
+      {preview && <PreviewAlert />}
       <div className={`${sharedStyles.layout} ${blogStyles.blogIndex}`}>
         <h1>My Notion Blog</h1>
         {posts.length === 0 && (
@@ -74,22 +57,24 @@ const BlogIndex: NextPage<Props> = ({ posts = [], preview }) => {
         )}
         {posts.map((post) => {
           return (
-            <div className={blogStyles.postPreview} key={post.Slug}>
+            <div className={blogStyles.postPreview} key={post.meta.Slug}>
               <h3>
-                <Link href="/blog/[slug]" as={getBlogLink(post.Slug)}>
+                <Link href="/blog/[slug]" as={getBlogLink(post.meta.Slug)}>
                   <div className={blogStyles.titleContainer}>
-                    {!post.Published && (
+                    {!post.meta.Published && (
                       <span className={blogStyles.draftBadge}>Draft</span>
                     )}
-                    <a>{post.Page}</a>
+                    <a>{post.meta.Page}</a>
                   </div>
                 </Link>
               </h3>
-              {post.Authors.length > 0 && (
-                <div className="authors">By: {post.Authors.join(" ")}</div>
+              {post.authors.length > 0 && (
+                <div className="authors">By: {post.authors.join(" ")}</div>
               )}
-              {post.Date && (
-                <div className="posted">Posted: {getDateStr(post.Date)}</div>
+              {post.meta.Date && (
+                <div className="posted">
+                  Posted: {getDateStr(post.meta.Date)}
+                </div>
               )}
             </div>
           );

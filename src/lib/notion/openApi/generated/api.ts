@@ -572,7 +572,21 @@ export enum ValueTypeEnum {
     Page = 'page',
     Tweet = 'tweet',
     CollectionView = 'collection_view',
-    Table = 'table'
+    Table = 'table',
+    BulletedList = 'bulleted_list',
+    NumberedList = 'numbered_list',
+    Divider = 'divider',
+    Text = 'text',
+    Image = 'image',
+    Video = 'video',
+    Embed = 'embed',
+    Header = 'header',
+    SubHeader = 'sub_header',
+    SubSubHeader = 'sub_sub_header',
+    Code = 'code',
+    Quote = 'quote',
+    Callout = 'callout',
+    Equation = 'equation'
 }
 
 

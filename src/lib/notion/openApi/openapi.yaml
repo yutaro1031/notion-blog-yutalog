@@ -292,6 +292,20 @@ components:
             - tweet
             - collection_view
             - table
+            - bulleted_list
+            - numbered_list
+            - divider
+            - text
+            - image
+            - video
+            - embed
+            - header
+            - sub_header
+            - sub_sub_header
+            - code
+            - quote
+            - callout
+            - equation
         schema:
           type: object
           additionalProperties:

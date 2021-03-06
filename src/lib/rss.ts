@@ -1,5 +1,5 @@
 import RSS from "rss";
-import { postIsPublished, getBlogLink } from "./blogHelpers";
+import { postIsPublished, getBlogLink } from "./blog";
 import {
   BLOG_DESCRIPTION,
   BLOG_TITLE,

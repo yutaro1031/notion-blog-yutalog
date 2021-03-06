@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getBlogLink } from "../../lib/blogHelpers";
+import { getBlogLink } from "../../lib/blog";
 import { getBlogIndex } from "../../lib/notion/getBlogIndex";
 import { getPageData } from "../../lib/notion/getPageData";
 

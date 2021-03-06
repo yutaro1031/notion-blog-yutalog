@@ -1,6 +1,5 @@
 import "../styles/global.css";
-import "katex/dist/katex.css";
-import Footer from "../components/footer";
+import Footer from "../components/atom/footer";
 import { AppProps } from "next/app";
 
 const App = ({ Component, pageProps }: AppProps) => (
