@@ -34,7 +34,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ preview }) => {
 
   const posts = postMetas.map((meta) => ({
     meta,
-    authors: meta.Authors.map((id: any) => users[id].full_name),
+    authors: meta.Authors.map((id) => users[id].full_name),
   }));
   return {
     props: {
